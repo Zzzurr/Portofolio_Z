@@ -606,7 +606,7 @@ body {
    RESPONSIVE TAMBAHAN — lebih detail untuk HP
    ============================================================ */
 
-/* Tablet (max 768px) */
+
 @media (max-width: 768px) {
     body {
         padding: 24px 12px;
@@ -617,7 +617,7 @@ body {
     }
 }
 
-/* Override media 600px yang lama — perbaikan */
+
 @media (max-width: 600px) {
     .profile-header {
         padding: 36px 16px 54px;
@@ -640,7 +640,7 @@ body {
     }
 }
 
-/* HP kecil (max 480px) */
+
 @media (max-width: 480px) {
     body {
         padding: 12px 8px;
@@ -712,7 +712,7 @@ body {
     }
 }
 
-/* HP sangat kecil (max 360px) */
+
 @media (max-width: 360px) {
     .profile-body h1 {
         font-size: 18px;
