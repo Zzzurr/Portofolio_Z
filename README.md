@@ -53,14 +53,14 @@ Lifelong Learn  █████████████████████�
 
 - 📖 Belajar **Web Development** dari nol
 - 🔨 Ngulik **Python** buat otomasi & scripting
-- 🎯 Fokus ngebangun portofolio yang solid
+- 🎯 Fokus belajar hal baru
 - 💡 Selalu nyari pelajaran dari setiap pengalaman
 
 <br/>
 
 ## 📁 Tentang Repo Ini
 
-Ini adalah repo portofolio pribadi gw — dibangun pakai **HTML, CSS, dan JavaScript** murni tanpa framework apapun.
+Ini adalah repo portofolio pribadi saya — dibangun pakai **HTML, CSS, dan JavaScript** murni tanpa framework apapun.
 
 **Fitur yang ada:**
 - ✨ Animated gradient background
