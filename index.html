@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio Pribadi Zur</title>
+
+    <!-- Font Awesome untuk ikon sosial media -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts: Syne (judul) + DM Sans (body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+
+    <!-- File CSS kita -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Canvas untuk partikel melayang (diisi JS) -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Tombol dark mode di pojok kiri atas -->
+    <button id="darkmode-btn" class="darkmode-btn" title="Toggle dark mode">🌙</button>
+
+    <!-- Tombol musik di pojok kanan atas -->
+    <button id="music-btn" class="music-btn">🎵 Musik: Off</button>
+
+    <!-- File musik background -->
+    <audio id="bg-music" loop>
+        <source src="music/nina.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Card utama -->
+    <div class="profile-card" id="profile-card">
+
+        <!-- Bagian atas card: banner + foto -->
+        <div class="profile-header">
+            <div class="avatar-wrapper">
+                <div class="avatar-ring"></div>      <!-- ring animasi luar -->
+                <div class="avatar-ring-2"></div>    <!-- ring animasi dalam -->
+                <img src="img/Zur.jpeg" alt="Foto Profil Zur" class="profile-img">
+            </div>
+        </div>
+
+        <!-- Bagian tengah card: nama, bio, skill -->
+        <div class="profile-body">
+            <h1>Zur</h1>
+
+            <!-- Teks yang diketik otomatis oleh JS -->
+            <p class="typed-subtitle">
+                <span id="typed-text"></span>
+                <span class="typed-cursor"></span>
+            </p>
+
+            <!-- Kutipan singkat -->
+            <div class="quote-bar">
+                "Belajar bukan cuma soal kode — tapi tentang siapa kamu setelahnya."
+            </div>
+
+            <!-- Bio -->
+            <p class="bio">Biasa dipanggil Jur. Perjalanan belajar ngoding ini bukan cuma soal ngetik code, tapi tentang memetik pelajaran dari setiap pengalaman hidup. Di balik layar, tekad gw didorong oleh kerja keras Ibu yang selalu mengusahakan yang terbaik buat gw dan kakak-kakak gw, serta kehadiran Umrah yang selalu menemani proses Saya menuju sukses.</p>
+
+            <!-- Skill section -->
+            <div class="skills-section">
+                <h3>Keahlian & Minat</h3>
+
+                <!-- Badge pill -->
+                <div class="badges">
+                    <span class="badge">Python & Javascript</span>
+                    <span class="badge">Problem Solving</span>
+                    <span class="badge">Lifelong Learner</span>
+                </div>
+
+                <!-- Skill bars — ubah data-width untuk ganti persentase -->
+                <div class="skill-bars">
+                    <div class="skill-item">
+                        <div class="skill-label">
+                            <span>Python</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-width="75"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-label">
+                            <span>JavaScript</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-width="60"></div>
+                        </div>
+                    </div>
+
+                    <div class="skill-item">
+                        <div class="skill-label">
+                            <span>Problem Solving</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="skill-track">
+                            <div class="skill-fill" data-width="90"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bagian bawah card: ikon sosial media -->
+        <div class="profile-footer">
+            <div class="social-icons">
+                <a href="https://instagram.com/zart.gifari" target="_blank" title="Instagram">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://wa.me/6282195767864" target="_blank" title="WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://tiktok.com/@nyctophile_.z" target="_blank" title="TikTok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+        </div>
+
+    </div><!-- /.profile-card -->
+
+
+    <script>
+        // ============================================================
+        // TYPED TEXT EFFECT
+        // Ganti isi array "phrases" kalau mau ubah teksnya
+        // ============================================================
+        const phrases = [
+            "Experience Seeker",
+            "Self-Taught Programmer",
+            "Problem Solver",
+            "Lifelong Learner"
+        ];
+        let phraseIndex = 0, charIndex = 0, isDeleting = false;
+        const typedEl = document.getElementById('typed-text');
+
+        function typeLoop() {
+            const current = phrases[phraseIndex];
+            if (!isDeleting) {
+                typedEl.textContent = current.slice(0, charIndex + 1);
+                charIndex++;
+                if (charIndex === current.length) {
+                    isDeleting = true;
+                    setTimeout(typeLoop, 1600); // jeda sebelum hapus
+                    return;
+                }
+            } else {
+                typedEl.textContent = current.slice(0, charIndex - 1);
+                charIndex--;
+                if (charIndex === 0) {
+                    isDeleting = false;
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                }
+            }
+            setTimeout(typeLoop, isDeleting ? 50 : 85); // hapus lebih cepat dari ngetik
+        }
+        typeLoop();
+
+
+        // ============================================================
+        // ANIMATED SKILL BARS
+        // IntersectionObserver = bar animasi saat elemen masuk viewport
+        // ============================================================
+        const fills = document.querySelectorAll('.skill-fill');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    el.style.width = el.dataset.width + '%'; // ambil nilai dari data-width HTML
+                    observer.unobserve(el); // stop observe setelah animasi jalan
+                }
+            });
+        }, { threshold: 0.3 });
+        fills.forEach(f => observer.observe(f));
+
+
+        // ============================================================
+        // DARK MODE TOGGLE
+        // Ganti atribut data-theme di <html> — CSS variabel otomatis ikut
+        // ============================================================
+        const html = document.documentElement;
+        const dmBtn = document.getElementById('darkmode-btn');
+
+        dmBtn.addEventListener('click', () => {
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            dmBtn.textContent = isDark ? '🌙' : '☀️';
+        });
+
+
+        // ============================================================
+        // MUSIK BACKGROUND
+        // ============================================================
+        const musicBtn = document.getElementById('music-btn');
+        const audio = document.getElementById('bg-music');
+
+        musicBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (audio.paused) {
+                audio.play();
+                musicBtn.textContent = '🔊 Musik: ON';
+                musicBtn.classList.add('playing');
+            } else {
+                audio.pause();
+                musicBtn.textContent = '🔇 Musik: OFF';
+                musicBtn.classList.remove('playing');
+            }
+        });
+
+
+        // ============================================================
+        // EFEK 3D TILT CARD
+        // Kartu miring mengikuti posisi mouse
+        // ============================================================
+        const card = document.getElementById('profile-card');
+
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const cx = rect.width / 2;
+            const cy = rect.height / 2;
+            const rotX = ((y - cy) / cy) * -10;
+            const rotY = ((x - cx) / cx) * 10;
+            card.style.transition = 'transform 0.15s ease-out, background 0.4s, box-shadow 0.4s';
+            card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transition = 'transform 0.6s ease, background 0.4s, box-shadow 0.4s';
+            card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+        });
+
+
+        // ============================================================
+        // FLOATING PARTICLES (titik-titik melayang)
+        // Menggunakan HTML Canvas API
+        // ============================================================
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let W, H, dots = [];
+
+        // Sesuaikan ukuran canvas ke layar
+        function resize() {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        // Buat satu titik dengan posisi & kecepatan acak
+        function makeDot() {
+            return {
+                x: Math.random() * W,
+                y: Math.random() * H,
+                r: Math.random() * 2.2 + 0.8,          // radius
+                vx: (Math.random() - 0.5) * 0.45,       // kecepatan horizontal
+                vy: (Math.random() - 0.5) * 0.45,       // kecepatan vertikal
+                alpha: Math.random() * 0.45 + 0.1       // transparansi
+            };
+        }
+
+        // Buat 55 titik
+        for (let i = 0; i < 55; i++) dots.push(makeDot());
+
+        // Loop animasi — dipanggil terus tiap frame
+        function drawParticles() {
+            ctx.clearRect(0, 0, W, H);
+
+            dots.forEach(d => {
+                // Gerakkan titik
+                d.x += d.vx;
+                d.y += d.vy;
+
+                // Pantul di tepi layar
+                if (d.x < 0 || d.x > W) d.vx *= -1;
+                if (d.y < 0 || d.y > H) d.vy *= -1;
+
+                // Gambar titik
+                ctx.beginPath();
+                ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${d.alpha})`;
+                ctx.fill();
+            });
+
+            // Gambar garis penghubung antar titik yang berdekatan
+            for (let i = 0; i < dots.length; i++) {
+                for (let j = i + 1; j < dots.length; j++) {
+                    const dx = dots[i].x - dots[j].x;
+                    const dy = dots[i].y - dots[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(dots[i].x, dots[i].y);
+                        ctx.lineTo(dots[j].x, dots[j].y);
+                        ctx.strokeStyle = `rgba(255,255,255,${0.08 * (1 - dist / 100)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(drawParticles); // panggil lagi di frame berikutnya
+        }
+
+        drawParticles();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,717 @@
+/* ============================================================
+   PORTOFOLIO ZUR — style.css
+   ============================================================
+
+   DAFTAR ISI:
+   1. CSS Variables (warna, shadow, dll)
+   2. Reset & Base
+   3. Background & Animasi Gradient
+   4. Particle Canvas
+   5. Tombol Musik
+   6. Tombol Dark Mode
+   7. Card Utama
+   8. Header Card (banner atas)
+   9. Avatar & Animasi Pulse
+   10. Body Card
+   11. Typed Subtitle & Cursor
+   12. Quote Bar
+   13. Bio
+   14. Skill Badges
+   15. Skill Bars
+   16. Footer & Social Icons
+   17. Responsive Mobile
+   ============================================================ */
+
+
+/* ============================================================
+   1. CSS VARIABLES
+   Semua warna disimpan di sini biar gampang diubah.
+   :root = tema terang (light mode)
+   [data-theme="dark"] = tema gelap (dark mode)
+   ============================================================ */
+
+:root {
+    /* Warna background gradient body */
+    --bg-grad-1: #ee7752;
+    --bg-grad-2: #e73c7e;
+    --bg-grad-3: #7b68ee;
+    --bg-grad-4: #23d5ab;
+
+    /* Warna card */
+    --card-bg: #ffffff;
+    --card-body-bg: #ffffff;
+    --footer-bg: #fafafa;
+    --footer-border: #f0f0f0;
+
+    /* Warna teks */
+    --text-h1: #1a1a2e;
+    --text-subtitle: #7f8c8d;
+    --text-bio: #555;
+    --text-skills-h: #1a1a2e;
+
+    /* Warna badge skill */
+    --badge-bg: #f0f0f5;
+    --badge-color: #34495e;
+    --badge-hover: #e0e0ef;
+
+    /* Warna ikon sosial media */
+    --icon-color: #6e8efb;
+    --icon-hover: #a777e3;
+
+    /* Warna skill bar */
+    --skill-track: #e8e8f0;    /* background track (abu) */
+    --skill-fill-1: #6e8efb;   /* warna awal gradient bar */
+    --skill-fill-2: #a777e3;   /* warna akhir gradient bar */
+
+    /* Warna quote bar */
+    --quote-bg: linear-gradient(90deg, rgba(110,142,251,0.08), rgba(167,119,227,0.08));
+    --quote-border: #a777e3;
+    --quote-text: #666;
+
+    /* Warna tombol musik */
+    --music-bg: rgba(255,255,255,0.15);
+    --music-border: rgba(255,255,255,0.3);
+    --music-color: #fff;
+
+    /* Shadow card */
+    --shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+/* Dark mode — tinggal override variable di atas */
+[data-theme="dark"] {
+    --card-bg: #1a1a2e;
+    --card-body-bg: #1a1a2e;
+    --footer-bg: #12121f;
+    --footer-border: #2a2a40;
+    --text-h1: #e8e8ff;
+    --text-subtitle: #9a9ab0;
+    --text-bio: #a0a0c0;
+    --text-skills-h: #e8e8ff;
+    --badge-bg: #2a2a40;
+    --badge-color: #c0c0e0;
+    --badge-hover: #35355a;
+    --icon-color: #89b4fa;
+    --icon-hover: #cba6f7;
+    --skill-track: #2a2a40;
+    --quote-bg: linear-gradient(90deg, rgba(110,142,251,0.12), rgba(167,119,227,0.12));
+    --quote-border: #7b68ee;
+    --quote-text: #9090b0;
+    --shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+
+/* ============================================================
+   2. RESET & BASE
+   Hapus margin/padding bawaan browser, set font default
+   ============================================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Rubik', sans-serif;
+
+    /* Gradient body — 4 warna dari variabel di atas */
+    background: linear-gradient(-45deg,
+        var(--bg-grad-1),
+        var(--bg-grad-2),
+        var(--bg-grad-3),
+        var(--bg-grad-4)
+    );
+    background-size: 400% 400%;   /* biar bisa di-animasikan */
+    animation: gradientFade 15s ease infinite;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 16px;
+
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Warna gradient body pas dark mode */
+[data-theme="dark"] body {
+    --bg-grad-1: #1a1a2e;
+    --bg-grad-2: #16213e;
+    --bg-grad-3: #0f3460;
+    --bg-grad-4: #533483;
+}
+
+
+/* ============================================================
+   3. ANIMASI GRADIENT BACKGROUND
+   background-position digerakkan dari 0% ke 100% bolak-balik
+   ============================================================ */
+
+@keyframes gradientFade {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+/* ============================================================
+   4. PARTICLE CANVAS
+   Canvas full-screen untuk titik-titik melayang.
+   pointer-events: none biar klik tetap tembus ke elemen lain.
+   ============================================================ */
+
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+
+/* ============================================================
+   5. TOMBOL MUSIK
+   position: fixed biar nempel di pojok kanan atas terus
+   backdrop-filter: blur = efek kaca
+   ============================================================ */
+
+.music-btn {
+    position: fixed;
+    top: 22px;
+    right: 22px;
+    padding: 10px 20px;
+    background: var(--music-bg);
+    border: 1px solid var(--music-border);
+    color: var(--music-color);
+    border-radius: 50px;
+    cursor: pointer;
+    z-index: 999;
+    font-family: 'Rubik', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.music-btn:hover {
+    background: rgba(255,255,255,0.28);
+    transform: scale(1.05);
+}
+
+/* Class ini ditambah JS pas musik sedang ON */
+.music-btn.playing {
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
+
+/* ============================================================
+   6. TOMBOL DARK MODE
+   Tombol bulat di pojok kiri atas
+   ============================================================ */
+
+.darkmode-btn {
+    position: fixed;
+    top: 22px;
+    left: 22px;
+    width: 42px;
+    height: 42px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 999;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.darkmode-btn:hover {
+    transform: scale(1.1) rotate(15deg);
+    background: rgba(255,255,255,0.28);
+}
+
+
+/* ============================================================
+   7. CARD UTAMA
+   cardEntrance = animasi masuk dari bawah saat halaman load
+   ============================================================ */
+
+.profile-card {
+    background: var(--card-bg);
+    width: 100%;
+    max-width: 580px;
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+    animation: cardEntrance 0.8s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes cardEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* ============================================================
+   8. HEADER CARD (BANNER ATAS)
+   Gradient bergerak saat di-hover menggunakan background-position
+   ============================================================ */
+
+.profile-header {
+    background: linear-gradient(135deg, #6e8efb 0%, #a777e3 50%, #ff9a9e 100%);
+    background-size: 200% 200%;
+    background-position: 0% 50%;
+    padding: 44px 24px 64px;
+    transition: background-position 0.8s ease;
+}
+
+.profile-header:hover {
+    background-position: 100% 50%;
+}
+
+
+/* ============================================================
+   9. AVATAR & ANIMASI PULSE
+   avatar-wrapper posisinya relative agar ring bisa ditaro absolute di atasnya.
+   margin-bottom negatif biar foto "nongol" ke section body di bawahnya.
+   ============================================================ */
+
+.avatar-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: -68px;   /* foto "turun" ke section berikutnya */
+}
+
+.profile-img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    object-fit: cover;
+    position: relative;
+    z-index: 2;
+    animation: avatarPulse 3s ease-in-out infinite;
+}
+
+/* Ring pertama (lebih dekat ke foto) */
+.avatar-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 126px;
+    height: 126px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.5);
+    animation: ringPulse 3s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* Ring kedua (lebih jauh, delay 0.5s biar selang-seling) */
+.avatar-ring-2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 146px;
+    height: 146px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.25);
+    animation: ringPulse 3s ease-in-out infinite 0.5s;
+    z-index: 1;
+}
+
+/* Animasi cahaya di tepi foto */
+@keyframes avatarPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0.5); }
+    50%       { box-shadow: 0 0 0 10px rgba(255,255,255,0); }
+}
+
+/* Animasi ring memudar sambil membesar */
+@keyframes ringPulse {
+    0%, 100% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+
+/* ============================================================
+   10. BODY CARD
+   padding-top besar (80px) biar ada ruang untuk foto yang nongol
+   ============================================================ */
+
+.profile-body {
+    background: var(--card-body-bg);
+    padding: 80px 28px 24px;
+    transition: background 0.4s;
+}
+
+.profile-body h1 {
+    font-family: 'Rubik', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-h1);
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+    transition: color 0.4s;
+}
+
+
+/* ============================================================
+   11. TYPED SUBTITLE & CURSOR BERKEDIP
+   min-height biar layout nggak loncat waktu teks berubah
+   ============================================================ */
+
+.typed-subtitle {
+    color: var(--text-subtitle);
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    min-height: 22px;
+    transition: color 0.4s;
+    letter-spacing: 0.2px;
+}
+
+/* Garis kursor berkedip di samping teks */
+.typed-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 14px;
+    background: #a777e3;
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 0.7s step-end infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+}
+
+
+/* ============================================================
+   12. QUOTE BAR
+   Border kiri warna ungu + background transparan gradient
+   ============================================================ */
+
+.quote-bar {
+    background: var(--quote-bg);
+    border-left: 3px solid var(--quote-border);
+    padding: 10px 16px;
+    border-radius: 0 10px 10px 0;
+    margin-bottom: 18px;
+    font-size: 12.5px;
+    color: var(--quote-text);
+    font-style: italic;
+    text-align: left;
+    line-height: 1.5;
+    transition: background 0.4s, color 0.4s;
+}
+
+
+/* ============================================================
+   13. BIO
+   ============================================================ */
+
+.bio {
+    font-size: 13.5px;
+    color: var(--text-bio);
+    margin-bottom: 24px;
+    line-height: 1.7;
+    font-weight: 300;
+    transition: color 0.4s;
+}
+
+
+/* ============================================================
+   14. SKILL BADGES (pill kecil)
+   ============================================================ */
+
+.skills-section h3 {
+    font-family: 'Rubik', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-skills-h);
+    margin-bottom: 14px;
+    transition: color 0.4s;
+}
+
+.badges {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.badge {
+    background: var(--badge-bg);
+    color: var(--badge-color);
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-size: 11.5px;
+    font-weight: 500;
+    cursor: default;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.badge:hover {
+    background: var(--badge-hover);
+    transform: translateY(-2px);    /* naik sedikit pas hover */
+}
+
+
+/* ============================================================
+   15. SKILL BARS
+   width awalnya 0%, lalu diisi JS pakai data-width dari HTML
+   transition: width bikin animasinya smooth
+   ============================================================ */
+
+.skill-bars {
+    margin-bottom: 6px;
+}
+
+.skill-item {
+    margin-bottom: 12px;
+}
+
+.skill-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11.5px;
+    color: var(--text-subtitle);
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+/* Track = rel background abu-abu */
+.skill-track {
+    height: 7px;
+    background: var(--skill-track);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: background 0.4s;
+}
+
+/* Fill = bar warna yang animasi dari 0 ke nilai persen */
+.skill-fill {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--skill-fill-1), var(--skill-fill-2));
+    width: 0%;   /* awal 0, diisi JS */
+    transition: width 1.4s cubic-bezier(.4,0,.2,1);
+}
+
+
+/* ============================================================
+   16. FOOTER & SOCIAL ICONS
+   ============================================================ */
+
+.profile-footer {
+    padding: 22px 28px;
+    background: var(--footer-bg);
+    border-top: 1px solid var(--footer-border);
+    transition: background 0.4s, border-color 0.4s;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+}
+
+.social-icons a {
+    color: var(--icon-color);
+    font-size: 24px;
+    text-decoration: none;
+    transition: transform 0.3s ease, color 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.social-icons a:hover {
+    color: var(--icon-hover);
+    transform: scale(1.25) translateY(-2px);
+}
+
+
+/* ============================================================
+   17. RESPONSIVE MOBILE (layar < 600px)
+   ============================================================ */
+
+@media (max-width: 600px) {
+    .profile-card {
+        border-radius: 18px;
+    }
+    .profile-body {
+        padding: 72px 18px 20px;
+    }
+    .profile-body h1 {
+        font-size: 22px;
+    }
+    .music-btn {
+        top: 14px;
+        right: 14px;
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+    .darkmode-btn {
+        top: 14px;
+        left: 14px;
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE TAMBAHAN — lebih detail untuk HP
+   ============================================================ */
+
+/* Tablet (max 768px) */
+@media (max-width: 768px) {
+    body {
+        padding: 24px 12px;
+        align-items: flex-start;
+    }
+    .profile-card {
+        max-width: 100%;
+    }
+}
+
+/* Override media 600px yang lama — perbaikan */
+@media (max-width: 600px) {
+    .profile-header {
+        padding: 36px 16px 54px;
+    }
+    .profile-body {
+        padding: 68px 18px 18px;
+    }
+    .bio {
+        font-size: 13px;
+    }
+    .badges {
+        gap: 6px;
+    }
+    .badge {
+        font-size: 11px;
+        padding: 5px 13px;
+    }
+    .social-icons {
+        gap: 22px;
+    }
+}
+
+/* HP kecil (max 480px) */
+@media (max-width: 480px) {
+    body {
+        padding: 12px 8px;
+    }
+    .profile-card {
+        border-radius: 14px;
+    }
+    .profile-header {
+        padding: 28px 14px 50px;
+    }
+    .profile-img {
+        width: 90px;
+        height: 90px;
+    }
+    .avatar-ring   { width: 106px; height: 106px; }
+    .avatar-ring-2 { width: 124px; height: 124px; }
+    .avatar-wrapper { margin-bottom: -54px; }
+    .profile-body {
+        padding: 62px 14px 16px;
+    }
+    .profile-body h1 {
+        font-size: 20px;
+    }
+    .typed-subtitle {
+        font-size: 11.5px;
+    }
+    .quote-bar {
+        font-size: 11px;
+        padding: 8px 12px;
+    }
+    .bio {
+        font-size: 12px;
+        line-height: 1.6;
+    }
+    .skills-section h3 {
+        font-size: 13px;
+    }
+    .badge {
+        font-size: 10.5px;
+        padding: 5px 11px;
+    }
+    .skill-label {
+        font-size: 10.5px;
+    }
+    .skill-track {
+        height: 5px;
+    }
+    .profile-footer {
+        padding: 14px 16px;
+    }
+    .social-icons {
+        gap: 18px;
+    }
+    .social-icons a {
+        font-size: 20px;
+    }
+    .music-btn {
+        top: 10px;
+        right: 10px;
+        padding: 6px 11px;
+        font-size: 10.5px;
+    }
+    .darkmode-btn {
+        top: 10px;
+        left: 10px;
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+}
+
+/* HP sangat kecil (max 360px) */
+@media (max-width: 360px) {
+    .profile-body h1 {
+        font-size: 18px;
+    }
+    .badges {
+        flex-direction: column;
+        align-items: center;
+    }
+    .music-btn {
+        font-size: 9.5px;
+        padding: 5px 9px;
+    }
+}
