@@ -9,7 +9,7 @@
 
 <div align="center">
 
-[![Portofolio](https://img.shields.io/badge/🌐%20Lihat%20Portofolio-6e8efb?style=for-the-badge&logoColor=white)](https://zzzurr.github.io/Portofolio_pribadi)
+[![Portofolio](https://img.shields.io/badge/🌐%20Lihat%20Portofolio-6e8efb?style=for-the-badge&logoColor=white)](https://zzzurr.github.io/Portofolio_Z)
 [![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/zart.gifari)
 [![TikTok](https://img.shields.io/badge/TikTok-000000?style=for-the-badge&logo=tiktok&logoColor=white)](https://tiktok.com/@nyctophile_.z)
 
