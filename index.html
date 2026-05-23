@@ -5,73 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portofolio Pribadi Zur</title>
 
-    <!-- Font Awesome untuk ikon sosial media -->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Google Fonts: Syne (judul) + DM Sans (body) -->
+    
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
 
-    <!-- File CSS kita -->
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Canvas untuk partikel melayang (diisi JS) -->
+    
     <canvas id="particle-canvas"></canvas>
 
-    <!-- Tombol dark mode di pojok kiri atas -->
+   
     <button id="darkmode-btn" class="darkmode-btn" title="Toggle dark mode">🌙</button>
 
-    <!-- Tombol musik di pojok kanan atas -->
+   
     <button id="music-btn" class="music-btn">🎵 Musik: Off</button>
 
-    <!-- File musik background -->
+    
     <audio id="bg-music" loop>
         <source src="music/nina.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Card utama -->
+    
     <div class="profile-card" id="profile-card">
 
-        <!-- Bagian atas card: banner + foto -->
+        
         <div class="profile-header">
             <div class="avatar-wrapper">
-                <div class="avatar-ring"></div>      <!-- ring animasi luar -->
-                <div class="avatar-ring-2"></div>    <!-- ring animasi dalam -->
+                <div class="avatar-ring"></div>      
+                <div class="avatar-ring-2"></div>    
                 <img src="img/Zur.jpeg" alt="Foto Profil Zur" class="profile-img">
             </div>
         </div>
 
-        <!-- Bagian tengah card: nama, bio, skill -->
+        
         <div class="profile-body">
             <h1>Zur</h1>
 
-            <!-- Teks yang diketik otomatis oleh JS -->
+           
             <p class="typed-subtitle">
                 <span id="typed-text"></span>
                 <span class="typed-cursor"></span>
             </p>
 
-            <!-- Kutipan singkat -->
+            
             <div class="quote-bar">
                 "Belajar bukan cuma soal kode — tapi tentang siapa kamu setelahnya."
             </div>
 
-            <!-- Bio -->
+            
             <p class="bio">Biasa dipanggil Jur. Perjalanan belajar ngoding ini bukan cuma soal ngetik code, tapi tentang memetik pelajaran dari setiap pengalaman hidup. Di balik layar, tekad gw didorong oleh kerja keras Ibu yang selalu mengusahakan yang terbaik buat gw dan kakak-kakak gw, serta kehadiran Umrah yang selalu menemani proses Saya menuju sukses.</p>
 
-            <!-- Skill section -->
+           
             <div class="skills-section">
                 <h3>Keahlian & Minat</h3>
 
-                <!-- Badge pill -->
+                
                 <div class="badges">
                     <span class="badge">Python & Javascript</span>
                     <span class="badge">Problem Solving</span>
                     <span class="badge">Lifelong Learner</span>
                 </div>
 
-                <!-- Skill bars — ubah data-width untuk ganti persentase -->
+                
                 <div class="skill-bars">
                     <div class="skill-item">
                         <div class="skill-label">
@@ -106,7 +106,7 @@
             </div>
         </div>
 
-        <!-- Bagian bawah card: ikon sosial media -->
+        
         <div class="profile-footer">
             <p class="find-me-text">Find Me On</p>
             <div class="social-icons">
@@ -119,14 +119,11 @@
             </div>
         </div>
 
-    </div><!-- /.profile-card -->
+    </div>
 
 
     <script>
-        // ============================================================
-        // TYPED TEXT EFFECT
-        // Ganti isi array "phrases" kalau mau ubah teksnya
-        // ============================================================
+       
         const phrases = [
             "Experience Seeker",
             "Self-Taught Programmer",
@@ -143,7 +140,7 @@
                 charIndex++;
                 if (charIndex === current.length) {
                     isDeleting = true;
-                    setTimeout(typeLoop, 1600); // jeda sebelum hapus
+                    setTimeout(typeLoop, 1600); 
                     return;
                 }
             } else {
@@ -154,32 +151,26 @@
                     phraseIndex = (phraseIndex + 1) % phrases.length;
                 }
             }
-            setTimeout(typeLoop, isDeleting ? 50 : 85); // hapus lebih cepat dari ngetik
+            setTimeout(typeLoop, isDeleting ? 50 : 85); 
         }
         typeLoop();
 
 
-        // ============================================================
-        // ANIMATED SKILL BARS
-        // IntersectionObserver = bar animasi saat elemen masuk viewport
-        // ============================================================
+       
         const fills = document.querySelectorAll('.skill-fill');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const el = entry.target;
-                    el.style.width = el.dataset.width + '%'; // ambil nilai dari data-width HTML
-                    observer.unobserve(el); // stop observe setelah animasi jalan
+                    el.style.width = el.dataset.width + '%'; 
+                    observer.unobserve(el); 
                 }
             });
         }, { threshold: 0.3 });
         fills.forEach(f => observer.observe(f));
 
 
-        // ============================================================
-        // DARK MODE TOGGLE
-        // Ganti atribut data-theme di <html> — CSS variabel otomatis ikut
-        // ============================================================
+       
         const html = document.documentElement;
         const dmBtn = document.getElementById('darkmode-btn');
 
@@ -190,9 +181,6 @@
         });
 
 
-        // ============================================================
-        // MUSIK BACKGROUND
-        // ============================================================
         const musicBtn = document.getElementById('music-btn');
         const audio = document.getElementById('bg-music');
 
@@ -210,10 +198,7 @@
         });
 
 
-        // ============================================================
-        // EFEK 3D TILT CARD
-        // Kartu miring mengikuti posisi mouse
-        // ============================================================
+       
         const card = document.getElementById('profile-card');
 
         card.addEventListener('mousemove', (e) => {
@@ -234,15 +219,12 @@
         });
 
 
-        // ============================================================
-        // FLOATING PARTICLES (titik-titik melayang)
-        // Menggunakan HTML Canvas API
-        // ============================================================
+       
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let W, H, dots = [];
 
-        // Sesuaikan ukuran canvas ke layar
+       
         function resize() {
             W = canvas.width = window.innerWidth;
             H = canvas.height = window.innerHeight;
@@ -250,42 +232,42 @@
         resize();
         window.addEventListener('resize', resize);
 
-        // Buat satu titik dengan posisi & kecepatan acak
+        
         function makeDot() {
             return {
                 x: Math.random() * W,
                 y: Math.random() * H,
-                r: Math.random() * 2.2 + 0.8,          // radius
-                vx: (Math.random() - 0.5) * 0.45,       // kecepatan horizontal
-                vy: (Math.random() - 0.5) * 0.45,       // kecepatan vertikal
-                alpha: Math.random() * 0.45 + 0.1       // transparansi
+                r: Math.random() * 2.2 + 0.8,          
+                vx: (Math.random() - 0.5) * 0.45,       
+                vy: (Math.random() - 0.5) * 0.45,       
+                alpha: Math.random() * 0.45 + 0.1       
             };
         }
 
-        // Buat 55 titik
+        
         for (let i = 0; i < 55; i++) dots.push(makeDot());
 
-        // Loop animasi — dipanggil terus tiap frame
+        
         function drawParticles() {
             ctx.clearRect(0, 0, W, H);
 
             dots.forEach(d => {
-                // Gerakkan titik
+                
                 d.x += d.vx;
                 d.y += d.vy;
 
-                // Pantul di tepi layar
+                
                 if (d.x < 0 || d.x > W) d.vx *= -1;
                 if (d.y < 0 || d.y > H) d.vy *= -1;
 
-                // Gambar titik
+               
                 ctx.beginPath();
                 ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(255, 255, 255, ${d.alpha})`;
                 ctx.fill();
             });
 
-            // Gambar garis penghubung antar titik yang berdekatan
+            
             for (let i = 0; i < dots.length; i++) {
                 for (let j = i + 1; j < dots.length; j++) {
                     const dx = dots[i].x - dots[j].x;
@@ -302,7 +284,7 @@
                 }
             }
 
-            requestAnimationFrame(drawParticles); // panggil lagi di frame berikutnya
+            requestAnimationFrame(drawParticles); 
         }
 
         drawParticles();
