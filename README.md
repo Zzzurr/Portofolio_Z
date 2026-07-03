@@ -17,7 +17,7 @@
 
 ---
 
-## 👋 Hei, saya Zur!
+## 👋 Hei, gw Zur!
 
 > *"Belajar bukan cuma soal kode — tapi tentang siapa kamu setelahnya."*
 
